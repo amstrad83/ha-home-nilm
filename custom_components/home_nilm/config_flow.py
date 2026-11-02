@@ -46,15 +46,12 @@ _ANY_MULTI = sel.EntitySelector(sel.EntitySelectorConfig(multiple=True))
 
 
 def _num(minimum: float, maximum: float, step: float, unit: str | None = None):
-    return sel.NumberSelector(
-        sel.NumberSelectorConfig(
-            min=minimum,
-            max=maximum,
-            step=step,
-            unit_of_measurement=unit,
-            mode=sel.NumberSelectorMode.BOX,
-        )
+    config = sel.NumberSelectorConfig(
+        min=minimum, max=maximum, step=step, mode=sel.NumberSelectorMode.BOX
     )
+    if unit:  # the selector rejects unit_of_measurement=None
+        config["unit_of_measurement"] = unit
+    return sel.NumberSelector(config)
 
 
 def _opt(key: str, values: dict[str, Any]):
