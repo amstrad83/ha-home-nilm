@@ -1,0 +1,255 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Home NILM",
+        "description": "Choose the meter and the loads you already measure.",
+        "data": {
+          "name": "Name",
+          "grid_power": "Grid power sensor",
+          "pv_power": "Solar production sensor (optional)",
+          "submeters": "Sub-metered loads (optional)",
+          "power_factor": "Grid power factor sensor (optional)",
+          "reactive_power": "Grid reactive power sensor (optional)",
+          "invert_reactive": "Invert reactive power sign",
+          "variable_entities": "Variable loads: entities that tell when they run (optional)",
+          "variable_name": "Name for the variable loads"
+        },
+        "data_description": {
+          "grid_power": "Power exchanged with the grid (positive = import). With solar, the house load is grid + solar.",
+          "submeters": "Loads you already measure (smart plugs, clamps). They are subtracted before disaggregation.",
+          "power_factor": "Used to compute reactive power, which separates motors (fridges, pumps) from heaters. Values in % are accepted.",
+          "reactive_power": "Use instead of the power factor if your meter reports reactive power directly.",
+          "variable_entities": "For example air conditioners or heat pumps: while one is active, unexplained power goes to this category and is not asked about."
+        }
+      },
+      "tuning": {
+        "title": "Detection",
+        "description": "Defaults work for most homes.",
+        "data": {
+          "step_threshold": "Minimum step",
+          "persistence_s": "Step persistence",
+          "match_sigma": "Match tolerance (standard deviations)",
+          "hour_weight": "Weight of the hour of day",
+          "sustained_power": "Sustained unknown load threshold",
+          "sustained_minutes": "Sustained unknown load duration",
+          "variable_off_delay": "Variable loads off delay"
+        },
+        "data_description": {
+          "persistence_s": "Steps shorter than this are ignored (start-up spikes, sensor misalignment).",
+          "hour_weight": "0 = ignore when appliances are usually used, 1 = strong preference."
+        }
+      }
+    },
+    "error": {
+      "grid_in_submeters": "The grid sensor cannot also be a sub-meter.",
+      "pf_and_reactive": "Choose either power factor or reactive power, not both."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Sources",
+        "data": {
+          "grid_power": "Grid power sensor",
+          "pv_power": "Solar production sensor (optional)",
+          "submeters": "Sub-metered loads (optional)",
+          "power_factor": "Grid power factor sensor (optional)",
+          "reactive_power": "Grid reactive power sensor (optional)",
+          "invert_reactive": "Invert reactive power sign",
+          "variable_entities": "Variable loads: entities that tell when they run (optional)",
+          "variable_name": "Name for the variable loads"
+        },
+        "data_description": {
+          "grid_power": "Power exchanged with the grid (positive = import). With solar, the house load is grid + solar.",
+          "submeters": "Loads you already measure (smart plugs, clamps). They are subtracted before disaggregation.",
+          "power_factor": "Used to compute reactive power, which separates motors (fridges, pumps) from heaters. Values in % are accepted.",
+          "reactive_power": "Use instead of the power factor if your meter reports reactive power directly.",
+          "variable_entities": "For example air conditioners or heat pumps: while one is active, unexplained power goes to this category and is not asked about."
+        }
+      },
+      "tuning": {
+        "title": "Detection",
+        "data": {
+          "step_threshold": "Minimum step",
+          "persistence_s": "Step persistence",
+          "match_sigma": "Match tolerance (standard deviations)",
+          "hour_weight": "Weight of the hour of day",
+          "sustained_power": "Sustained unknown load threshold",
+          "sustained_minutes": "Sustained unknown load duration",
+          "variable_off_delay": "Variable loads off delay"
+        },
+        "data_description": {
+          "persistence_s": "Steps shorter than this are ignored (start-up spikes, sensor misalignment).",
+          "hour_weight": "0 = ignore when appliances are usually used, 1 = strong preference."
+        }
+      }
+    },
+    "error": {
+      "grid_in_submeters": "The grid sensor cannot also be a sub-meter.",
+      "pf_and_reactive": "Choose either power factor or reactive power, not both."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "base_load": {
+        "name": "Base load"
+      },
+      "other": {
+        "name": "Other"
+      },
+      "base_load_energy": {
+        "name": "Base load energy"
+      },
+      "other_energy": {
+        "name": "Other energy"
+      },
+      "unmeasured": {
+        "name": "Unmeasured power"
+      },
+      "unknown_events": {
+        "name": "Unknown events"
+      },
+      "last_event": {
+        "name": "Last event"
+      }
+    },
+    "select": {
+      "event_to_label": {
+        "name": "Event to label",
+        "state": {
+          "now": "What is on now"
+        }
+      }
+    },
+    "text": {
+      "appliance_name": {
+        "name": "What was it?"
+      }
+    }
+  },
+  "services": {
+    "label_event": {
+      "name": "Label event",
+      "description": "Tell what an event was. The appliance is learned or reinforced.",
+      "fields": {
+        "event_id": {
+          "name": "Event ID",
+          "description": "From the unknown events sensor."
+        },
+        "name": {
+          "name": "Appliance",
+          "description": "Name of the appliance."
+        },
+        "entry_id": {
+          "name": "Config entry",
+          "description": "Only needed with more than one instance."
+        }
+      }
+    },
+    "label_now": {
+      "name": "Label what is on now",
+      "description": "Label the latest unknown load that is still on, or the current unexplained power.",
+      "fields": {
+        "name": {
+          "name": "Appliance",
+          "description": "Name of the appliance."
+        },
+        "entry_id": {
+          "name": "Config entry",
+          "description": "Only needed with more than one instance."
+        }
+      }
+    },
+    "dismiss_event": {
+      "name": "Dismiss event",
+      "description": "Remove an event from the list without learning from it.",
+      "fields": {
+        "event_id": {
+          "name": "Event ID",
+          "description": "Event ID"
+        },
+        "entry_id": {
+          "name": "Config entry",
+          "description": "Only needed with more than one instance."
+        }
+      }
+    },
+    "teach": {
+      "name": "Teach appliance",
+      "description": "Create or reinforce a signature from known values.",
+      "fields": {
+        "name": {
+          "name": "Appliance",
+          "description": "Appliance"
+        },
+        "power": {
+          "name": "Power",
+          "description": "Typical power step in W."
+        },
+        "reactive_ratio": {
+          "name": "Reactive ratio",
+          "description": "Reactive / active power step (about 0.3 for compressors, 0 for heaters)."
+        },
+        "duration_minutes": {
+          "name": "Duration",
+          "description": "Typical duration in minutes."
+        },
+        "hours": {
+          "name": "Hours",
+          "description": "Usual hours of use (0-23)."
+        },
+        "samples": {
+          "name": "Weight",
+          "description": "How many observations this counts as."
+        },
+        "entry_id": {
+          "name": "Config entry",
+          "description": "Only needed with more than one instance."
+        }
+      }
+    },
+    "forget_appliance": {
+      "name": "Forget appliance",
+      "description": "Delete a signature and its sensors.",
+      "fields": {
+        "name": {
+          "name": "Appliance",
+          "description": "Appliance"
+        },
+        "entry_id": {
+          "name": "Config entry",
+          "description": "Only needed with more than one instance."
+        }
+      }
+    },
+    "rename_appliance": {
+      "name": "Rename appliance",
+      "description": "Rename a signature. Its sensors are recreated with the new name.",
+      "fields": {
+        "name": {
+          "name": "Current name",
+          "description": "Current name"
+        },
+        "new_name": {
+          "name": "New name",
+          "description": "New name"
+        },
+        "entry_id": {
+          "name": "Config entry",
+          "description": "Only needed with more than one instance."
+        }
+      }
+    },
+    "get_signatures": {
+      "name": "Get signatures",
+      "description": "Return the learned signatures and the unknown events.",
+      "fields": {
+        "entry_id": {
+          "name": "Config entry",
+          "description": "Only needed with more than one instance."
+        }
+      }
+    }
+  }
+}

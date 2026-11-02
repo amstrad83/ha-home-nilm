@@ -1,0 +1,255 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Home NILM",
+        "description": "Scegli il misuratore e i carichi che misuri già.",
+        "data": {
+          "name": "Nome",
+          "grid_power": "Sensore potenza rete",
+          "pv_power": "Sensore produzione fotovoltaico (opzionale)",
+          "submeters": "Carichi già misurati (opzionale)",
+          "power_factor": "Sensore fattore di potenza rete (opzionale)",
+          "reactive_power": "Sensore potenza reattiva rete (opzionale)",
+          "invert_reactive": "Inverti il segno della reattiva",
+          "variable_entities": "Carichi variabili: entità che dicono quando sono accesi (opzionale)",
+          "variable_name": "Nome dei carichi variabili"
+        },
+        "data_description": {
+          "grid_power": "Potenza scambiata con la rete (positiva = prelievo). Con il fotovoltaico, il consumo della casa è rete + produzione.",
+          "submeters": "Carichi che misuri già (prese smart, pinze). Vengono sottratti prima dell'analisi.",
+          "power_factor": "Serve a calcolare la potenza reattiva, che separa i motori (frigoriferi, pompe) dalle resistenze. Accetta valori in %.",
+          "reactive_power": "Da usare al posto del fattore di potenza se il misuratore fornisce già la reattiva.",
+          "variable_entities": "Per esempio condizionatori o pompe di calore: mentre uno è attivo, la potenza non spiegata va in questa voce e non viene chiesta."
+        }
+      },
+      "tuning": {
+        "title": "Rilevamento",
+        "description": "I valori predefiniti vanno bene per la maggior parte delle case.",
+        "data": {
+          "step_threshold": "Salto minimo",
+          "persistence_s": "Durata minima del salto",
+          "match_sigma": "Tolleranza di riconoscimento (deviazioni standard)",
+          "hour_weight": "Peso dell'ora del giorno",
+          "sustained_power": "Soglia carico sconosciuto prolungato",
+          "sustained_minutes": "Durata carico sconosciuto prolungato",
+          "variable_off_delay": "Ritardo di spegnimento carichi variabili"
+        },
+        "data_description": {
+          "persistence_s": "I salti più brevi vengono ignorati (picchi di avvio, sensori non allineati).",
+          "hour_weight": "0 = ignora gli orari abituali, 1 = preferenza forte."
+        }
+      }
+    },
+    "error": {
+      "grid_in_submeters": "Il sensore della rete non può essere anche un carico misurato.",
+      "pf_and_reactive": "Scegli il fattore di potenza oppure la reattiva, non entrambi."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Sorgenti",
+        "data": {
+          "grid_power": "Sensore potenza rete",
+          "pv_power": "Sensore produzione fotovoltaico (opzionale)",
+          "submeters": "Carichi già misurati (opzionale)",
+          "power_factor": "Sensore fattore di potenza rete (opzionale)",
+          "reactive_power": "Sensore potenza reattiva rete (opzionale)",
+          "invert_reactive": "Inverti il segno della reattiva",
+          "variable_entities": "Carichi variabili: entità che dicono quando sono accesi (opzionale)",
+          "variable_name": "Nome dei carichi variabili"
+        },
+        "data_description": {
+          "grid_power": "Potenza scambiata con la rete (positiva = prelievo). Con il fotovoltaico, il consumo della casa è rete + produzione.",
+          "submeters": "Carichi che misuri già (prese smart, pinze). Vengono sottratti prima dell'analisi.",
+          "power_factor": "Serve a calcolare la potenza reattiva, che separa i motori (frigoriferi, pompe) dalle resistenze. Accetta valori in %.",
+          "reactive_power": "Da usare al posto del fattore di potenza se il misuratore fornisce già la reattiva.",
+          "variable_entities": "Per esempio condizionatori o pompe di calore: mentre uno è attivo, la potenza non spiegata va in questa voce e non viene chiesta."
+        }
+      },
+      "tuning": {
+        "title": "Rilevamento",
+        "data": {
+          "step_threshold": "Salto minimo",
+          "persistence_s": "Durata minima del salto",
+          "match_sigma": "Tolleranza di riconoscimento (deviazioni standard)",
+          "hour_weight": "Peso dell'ora del giorno",
+          "sustained_power": "Soglia carico sconosciuto prolungato",
+          "sustained_minutes": "Durata carico sconosciuto prolungato",
+          "variable_off_delay": "Ritardo di spegnimento carichi variabili"
+        },
+        "data_description": {
+          "persistence_s": "I salti più brevi vengono ignorati (picchi di avvio, sensori non allineati).",
+          "hour_weight": "0 = ignora gli orari abituali, 1 = preferenza forte."
+        }
+      }
+    },
+    "error": {
+      "grid_in_submeters": "Il sensore della rete non può essere anche un carico misurato.",
+      "pf_and_reactive": "Scegli il fattore di potenza oppure la reattiva, non entrambi."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "base_load": {
+        "name": "Carico di base"
+      },
+      "other": {
+        "name": "Altro"
+      },
+      "base_load_energy": {
+        "name": "Energia carico di base"
+      },
+      "other_energy": {
+        "name": "Energia altro"
+      },
+      "unmeasured": {
+        "name": "Potenza non misurata"
+      },
+      "unknown_events": {
+        "name": "Eventi da riconoscere"
+      },
+      "last_event": {
+        "name": "Ultimo evento"
+      }
+    },
+    "select": {
+      "event_to_label": {
+        "name": "Evento da etichettare",
+        "state": {
+          "now": "Ciò che è acceso ora"
+        }
+      }
+    },
+    "text": {
+      "appliance_name": {
+        "name": "Cos'era?"
+      }
+    }
+  },
+  "services": {
+    "label_event": {
+      "name": "Etichetta evento",
+      "description": "Indica cos'era un evento. L'elettrodomestico viene appreso o rafforzato.",
+      "fields": {
+        "event_id": {
+          "name": "ID evento",
+          "description": "Dal sensore degli eventi da riconoscere."
+        },
+        "name": {
+          "name": "Elettrodomestico",
+          "description": "Nome dell'elettrodomestico."
+        },
+        "entry_id": {
+          "name": "Istanza",
+          "description": "Serve solo con più di un'istanza."
+        }
+      }
+    },
+    "label_now": {
+      "name": "Etichetta ciò che è acceso ora",
+      "description": "Etichetta l'ultimo carico sconosciuto ancora acceso, o la potenza non spiegata attuale.",
+      "fields": {
+        "name": {
+          "name": "Elettrodomestico",
+          "description": "Nome dell'elettrodomestico."
+        },
+        "entry_id": {
+          "name": "Istanza",
+          "description": "Serve solo con più di un'istanza."
+        }
+      }
+    },
+    "dismiss_event": {
+      "name": "Ignora evento",
+      "description": "Toglie un evento dalla lista senza imparare da esso.",
+      "fields": {
+        "event_id": {
+          "name": "ID evento",
+          "description": "ID evento"
+        },
+        "entry_id": {
+          "name": "Istanza",
+          "description": "Serve solo con più di un'istanza."
+        }
+      }
+    },
+    "teach": {
+      "name": "Insegna elettrodomestico",
+      "description": "Crea o rafforza una firma da valori noti.",
+      "fields": {
+        "name": {
+          "name": "Elettrodomestico",
+          "description": "Elettrodomestico"
+        },
+        "power": {
+          "name": "Potenza",
+          "description": "Salto di potenza tipico in W."
+        },
+        "reactive_ratio": {
+          "name": "Rapporto reattiva",
+          "description": "Rapporto reattiva/attiva del salto (circa 0,3 per i compressori, 0 per le resistenze)."
+        },
+        "duration_minutes": {
+          "name": "Durata",
+          "description": "Durata tipica in minuti."
+        },
+        "hours": {
+          "name": "Ore",
+          "description": "Ore abituali di uso (0-23)."
+        },
+        "samples": {
+          "name": "Peso",
+          "description": "Quante osservazioni vale."
+        },
+        "entry_id": {
+          "name": "Istanza",
+          "description": "Serve solo con più di un'istanza."
+        }
+      }
+    },
+    "forget_appliance": {
+      "name": "Dimentica elettrodomestico",
+      "description": "Elimina una firma e i suoi sensori.",
+      "fields": {
+        "name": {
+          "name": "Elettrodomestico",
+          "description": "Elettrodomestico"
+        },
+        "entry_id": {
+          "name": "Istanza",
+          "description": "Serve solo con più di un'istanza."
+        }
+      }
+    },
+    "rename_appliance": {
+      "name": "Rinomina elettrodomestico",
+      "description": "Rinomina una firma. I suoi sensori vengono ricreati con il nuovo nome.",
+      "fields": {
+        "name": {
+          "name": "Nome attuale",
+          "description": "Nome attuale"
+        },
+        "new_name": {
+          "name": "Nuovo nome",
+          "description": "Nuovo nome"
+        },
+        "entry_id": {
+          "name": "Istanza",
+          "description": "Serve solo con più di un'istanza."
+        }
+      }
+    },
+    "get_signatures": {
+      "name": "Leggi firme",
+      "description": "Restituisce le firme apprese e gli eventi da riconoscere.",
+      "fields": {
+        "entry_id": {
+          "name": "Istanza",
+          "description": "Serve solo con più di un'istanza."
+        }
+      }
+    }
+  }
+}
