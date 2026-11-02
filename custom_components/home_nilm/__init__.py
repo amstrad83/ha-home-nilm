@@ -1,7 +1,10 @@
 """Home NILM: learn and recognise appliances from a single power meter."""
 from __future__ import annotations
 
-import voluptuous as vol
+try:  # Home Assistant moved from voluptuous to probatio
+    import voluptuous as vol
+except ImportError:  # pragma: no cover
+    import probatio as vol  # type: ignore[no-redef]
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import (
