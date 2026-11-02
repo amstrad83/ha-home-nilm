@@ -130,7 +130,10 @@ class NilmCoordinator:
 
     async def async_stop(self) -> None:
         for unsub in self._unsubs:
-            unsub()
+            try:
+                unsub()
+            except Exception:  # noqa: BLE001 - the stop listener may have fired
+                pass
         self._unsubs.clear()
         await self.store.async_save(self.engine.to_dict())
 
